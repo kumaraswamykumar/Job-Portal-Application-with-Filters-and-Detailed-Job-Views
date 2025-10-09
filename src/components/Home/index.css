@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.home-container {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/home-lg-bg.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100vw;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 40px;
+}
+
+.home-container h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.home-container p {
+  max-width: 600px;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.home-container button {
+  background-color: #4f46e5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.home-container button:hover {
+  background-color: #4338ca;
+}
+
+/* Responsive for small devices */
+@media screen and (max-width: 768px) {
+  .home-container {
+    background-image: url('https://assets.ccbp.in/frontend/react-js/home-sm-bg.png');
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .home-container h1 {
+    font-size: 28px;
+  }
+
+  .home-container p {
+    font-size: 16px;
+    max-width: 100%;
+  }
+
+  .home-container button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

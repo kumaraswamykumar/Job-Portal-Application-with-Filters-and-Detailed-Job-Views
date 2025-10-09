@@ -1,0 +1,217 @@
+.jobs-container {
+  display: flex;
+  background-color: #121212;
+  color: #f1f1f1;
+  min-height: 100vh;
+  padding: 20px;
+  gap: 20px;
+}
+
+.sidebar {
+  flex: 0 0 30%;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.profile-card {
+  text-align: center;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.profile-img {
+  width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-name {
+  color: #6366f1;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile-bio {
+  color: #475569;
+  font-size: 14px;
+}
+
+/* Filters Section */
+.filters h2 {
+  margin: 10px 0;
+}
+
+/* List styling for checkboxes and radios */
+.filters li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px; /* less spacing between items */
+}
+
+/* Checkbox & Radio input styles */
+.filters li input[type='checkbox'],
+.filters li input[type='radio'] {
+  width: 14px; /* smaller size */
+  height: 14px; /* smaller size */
+  margin: 0 6px 0 0; /* small space between input and label */
+  cursor: pointer;
+}
+
+/* Label styles */
+.filters li label {
+  font-size: 14px;
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.jobs-main,
+.jobs-section {
+  flex: 1;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.search-bar {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 4px 0 0 4px;
+  border-style: solid;
+  border-color: #272727;
+  outline: none;
+  font-size: 14px;
+  border-width: 3px;
+}
+
+.search-bar button {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 0 12px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.jobs-list {
+  list-style: none;
+  padding: 0;
+}
+
+.job-item {
+  background-color: #2a2a2a;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.job-info h1 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.job-info p {
+  margin: 5px 0;
+}
+
+.job-info hr {
+  border-color: white;
+  margin: 10px 0;
+}
+
+/* ---------------- Responsive ---------------- */
+
+/* Small devices (mobile) */
+@media screen and (max-width: 767px) {
+  .jobs-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .sidebar {
+    flex: 1 0 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .jobs-section {
+    flex: 1 0 100%;
+    padding: 15px;
+  }
+
+  .profile-card {
+    padding: 15px;
+  }
+
+  .search-bar input,
+  .search-bar button {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .filters li input[type='checkbox'],
+  .filters li input[type='radio'] {
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+  }
+
+  .filters li label {
+    font-size: 12px;
+  }
+}
+
+/* Medium/Large devices */
+@media screen and (min-width: 768px) {
+  .sidebar {
+    flex: 0 0 30%;
+  }
+
+  .jobs-section {
+    flex: 0 0 70%;
+  }
+}
+
+/* Ensure all job text is white and no underlines */
+.job-item,
+.job-item h1,
+.job-item p,
+.job-item a {
+  color: #ffffff; /* Keep text white */
+  text-decoration: none; /* Remove underlines */
+}
+
+/* Optional: maintain consistent spacing for job-item content */
+.job-info h1 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.job-info p {
+  margin: 5px 0;
+  color: #ffffff;
+}
+
+.job-info hr {
+  border-color: white;
+  margin: 10px 0;
+}
+
+/* Job links specifically (if used) */
+.job-link {
+  text-decoration: none; /* Remove underline */
+  color: #ffffff;
+}
+
+.job-link:hover {
+  text-decoration: none; /* Remove underline on hover */
+  color: #ffffff;
+}

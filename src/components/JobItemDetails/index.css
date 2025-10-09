@@ -1,0 +1,124 @@
+.job-details-container {
+  background-color: #121212;
+  color: #f1f1f1;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.job-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.job-header img {
+  width: 80px;
+  height: 80px;
+}
+
+.job-header h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.section-hr {
+  border-color: white;
+  margin: 15px 0;
+}
+
+.skills-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.skill-item {
+  background-color: #2a2a2a;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skill-item img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.life-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.similar-jobs {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.similar-job-item {
+  background-color: #2a2a2a;
+  padding: 10px;
+  border-radius: 8px;
+  width: 250px;
+}
+
+.similar-job-item img {
+  width: 60px;
+  height: 60px;
+}
+
+.failure-view {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.failure-view img {
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.failure-view button {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+/* Remove underline from all links and keep color white */
+.job-details-page a {
+  text-decoration: none; /* Remove underline */
+  color: #ffffff; /* Keep text white */
+}
+
+/* Job description and text */
+.job-description,
+.skills-section p,
+.life-at-company p,
+.similar-job-card p {
+  color: #ffffff; /* Ensure all text is white */
+  text-decoration: none; /* Remove any underline */
+}
+
+/* Job title in similar jobs */
+.similar-job-card h2 {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Optional: ensure headers remain white */
+.job-header h1,
+.skills-section h1,
+.life-at-company h1,
+.similar-jobs-section h1 {
+  color: #ffffff;
+  text-decoration: none;
+}
