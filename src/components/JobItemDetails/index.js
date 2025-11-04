@@ -1,18 +1,21 @@
 import {Component} from 'react'
+import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
+  inProgress: 'IN_PROGRESS',
   success: 'SUCCESS',
   failure: 'FAILURE',
-  inProgress: 'IN_PROGRESS',
 }
 
 class JobItemDetails extends Component {
   state = {
-    jobDetails: null,
+    jobDetails: {},
+    skills: [],
+    lifeAtCompany: {},
     similarJobs: [],
     apiStatus: apiStatusConstants.initial,
   }
@@ -23,11 +26,16 @@ class JobItemDetails extends Component {
 
   getJobDetails = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
+    const jwtToken = Cookies.get('jwt_token')
     const {match} = this.props
     const {id} = match.params
-    const jwtToken = Cookies.get('jwt_token')
     const url = `https://apis.ccbp.in/jobs/${id}`
-    const options = {headers: {Authorization: `Bearer ${jwtToken}`}}
+
+    const options = {
+      headers: {Authorization: `Bearer ${jwtToken}`},
+      method: 'GET',
+    }
+
     const response = await fetch(url, options)
     if (response.ok) {
       const data = await response.json()
@@ -37,17 +45,35 @@ class JobItemDetails extends Component {
         title: job.title,
         rating: job.rating,
         companyLogoUrl: job.company_logo_url,
-        employmentType: job.employment_type,
         location: job.location,
+        employmentType: job.employment_type,
         packagePerAnnum: job.package_per_annum,
         jobDescription: job.job_description,
         companyWebsiteUrl: job.company_website_url,
-        skills: job.skills,
-        lifeAtCompany: job.life_at_company,
       }
+      const updatedSkills = job.skills.map(each => ({
+        name: each.name,
+        imageUrl: each.image_url,
+      }))
+      const updatedLifeAtCompany = {
+        description: job.life_at_company.description,
+        imageUrl: job.life_at_company.image_url,
+      }
+      const updatedSimilarJobs = data.similar_jobs.map(each => ({
+        id: each.id,
+        title: each.title,
+        rating: each.rating,
+        companyLogoUrl: each.company_logo_url,
+        location: each.location,
+        employmentType: each.employment_type,
+        jobDescription: each.job_description,
+      }))
+
       this.setState({
         jobDetails: updatedJob,
-        similarJobs: data.similar_jobs,
+        skills: updatedSkills,
+        lifeAtCompany: updatedLifeAtCompany,
+        similarJobs: updatedSimilarJobs,
         apiStatus: apiStatusConstants.success,
       })
     } else {
@@ -55,76 +81,84 @@ class JobItemDetails extends Component {
     }
   }
 
-  renderSuccess = () => {
-    const {jobDetails, similarJobs} = this.state
-    const {
-      title,
-      rating,
-      companyLogoUrl,
-      employmentType,
-      location,
-      packagePerAnnum,
-      jobDescription,
-      companyWebsiteUrl,
-      skills,
-      lifeAtCompany,
-    } = jobDetails
-
+  renderJobDetailsView = () => {
+    const {jobDetails, skills, lifeAtCompany, similarJobs} = this.state
     return (
       <div className="job-details-container">
         <div className="job-header">
-          <img src={companyLogoUrl} alt="job details company logo" />
-          <div>
-            <h1>{title}</h1>
-            <p>⭐ {rating}</p>
-            <p>{location}</p>
-            <p>{employmentType}</p>
-            <p>{packagePerAnnum}</p>
+          <img
+            src={jobDetails.companyLogoUrl}
+            alt="job details company logo"
+            className="company-logo-details"
+          />
+          <h1 className="job-title">{jobDetails.title}</h1>
+          <p className="rating">⭐ {jobDetails.rating}</p>
+        </div>
+
+        <div className="job-meta">
+          <p>{jobDetails.location}</p>
+          <p>{jobDetails.employmentType}</p>
+          <p>{jobDetails.packagePerAnnum}</p>
+        </div>
+
+        <hr className="separator" />
+
+        <div className="job-description-section">
+          <h1>Description</h1>
+          <p className="job-description">{jobDetails.jobDescription}</p>
+          <a
+            href={jobDetails.companyWebsiteUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="visit-link"
+          >
+            Visit
+          </a>
+        </div>
+
+        <div className="skills-section">
+          <h1>Skills</h1>
+          <ul className="skills-list">
+            {skills.map(each => (
+              <li key={each.name} className="skill-item">
+                <img
+                  src={each.imageUrl}
+                  alt={each.name}
+                  className="skill-icon"
+                />
+                <p>{each.name}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="life-at-company">
+          <h1>Life at Company</h1>
+          <div className="life-content">
+            <p>{lifeAtCompany.description}</p>
+            <img
+              src={lifeAtCompany.imageUrl}
+              alt="life at company"
+              className="life-img"
+            />
           </div>
         </div>
 
-        <hr className="section-hr" />
-
-        <h2>Description</h2>
-        <p>{jobDescription}</p>
-        <a href={companyWebsiteUrl} target="_blank" rel="noreferrer">
-          Visit Company Website
-        </a>
-
-        <hr className="section-hr" />
-
-        <h2>Skills</h2>
-        <ul className="skills-list">
-          {skills.map(skill => (
-            <li key={skill.name} className="skill-item">
-              <img src={skill.image_url} alt={skill.name} />
-              <p>{skill.name}</p>
-            </li>
-          ))}
-        </ul>
-
-        <hr className="section-hr" />
-
-        <h2>Life at Company</h2>
-        <p>{lifeAtCompany.description}</p>
-        <img
-          src={lifeAtCompany.image_url}
-          alt="life at company"
-          className="life-image"
-        />
-
-        <hr className="section-hr" />
-
-        <h2>Similar Jobs</h2>
-        <ul className="similar-jobs">
+        <h1>Similar Jobs</h1>
+        <ul className="similar-jobs-list">
           {similarJobs.map(job => (
             <li key={job.id} className="similar-job-item">
-              <img src={job.company_logo_url} alt="similar job company logo" />
-              <h3>{job.title}</h3>
+              <img
+                src={job.companyLogoUrl}
+                alt="similar job company logo"
+                className="company-logo-details"
+              />
+              <h1>{job.title}</h1>
               <p>⭐ {job.rating}</p>
               <p>{job.location}</p>
-              <p>{job.employment_type}</p>
-              <p>{job.job_description}</p>
+              <p>{job.employmentType}</p>
+              <h1>Description</h1>
+              <p>{job.jobDescription}</p>
             </li>
           ))}
         </ul>
@@ -132,14 +166,20 @@ class JobItemDetails extends Component {
     )
   }
 
-  renderFailure = () => (
-    <div className="failure-view">
+  renderLoadingView = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
+    </div>
+  )
+
+  renderFailureView = () => (
+    <div className="failure-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
         alt="failure view"
       />
       <h1>Oops! Something Went Wrong</h1>
-      <p>We cannot seem to find the job details you are looking for</p>
+      <p>We cannot seem to find the page you are looking for</p>
       <button type="button" onClick={this.getJobDetails}>
         Retry
       </button>
@@ -148,15 +188,18 @@ class JobItemDetails extends Component {
 
   render() {
     const {apiStatus} = this.state
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
+
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
-        return (
-          <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
-        )
+        return this.renderLoadingView()
       case apiStatusConstants.success:
-        return this.renderSuccess()
+        return this.renderJobDetailsView()
       case apiStatusConstants.failure:
-        return this.renderFailure()
+        return this.renderFailureView()
       default:
         return null
     }

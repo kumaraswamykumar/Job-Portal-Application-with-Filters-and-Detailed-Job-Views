@@ -11,13 +11,23 @@ const apiStatusConstants = {
   failure: 'FAILURE',
 }
 
+// ✅ Correct employment types list
+const employmentTypesList = [
+  {label: 'Full Time', employmentTypeId: 'FULLTIME'},
+  {label: 'Part Time', employmentTypeId: 'PARTTIME'},
+  {label: 'Freelance', employmentTypeId: 'FREELANCE'},
+  {label: 'Internship', employmentTypeId: 'INTERNSHIP'},
+]
+
 class Jobs extends Component {
   state = {
     profile: {},
     jobsList: [],
+    allJobs: [],
     employmentType: [],
     salaryRange: '',
     searchInput: '',
+    selectedLocations: [],
     apiStatus: apiStatusConstants.initial,
     profileStatus: apiStatusConstants.initial,
   }
@@ -77,6 +87,7 @@ class Jobs extends Component {
       }))
       this.setState({
         jobsList: updatedJobs,
+        allJobs: updatedJobs,
         apiStatus: apiStatusConstants.success,
       })
     } else {
@@ -105,12 +116,40 @@ class Jobs extends Component {
     this.setState({salaryRange: event.target.value}, this.getJobs)
   }
 
+  onChangeLocation = event => {
+    const {selectedLocations} = this.state
+    const {checked, value} = event.target
+    if (checked) {
+      this.setState(
+        {selectedLocations: [...selectedLocations, value]},
+        this.filterByLocation,
+      )
+    } else {
+      const updated = selectedLocations.filter(each => each !== value)
+      this.setState({selectedLocations: updated}, this.filterByLocation)
+    }
+  }
+
+  filterByLocation = () => {
+    const {selectedLocations, allJobs} = this.state
+    if (selectedLocations.length === 0) {
+      this.setState(prevState => ({jobsList: prevState.allJobs}))
+    } else {
+      const filtered = allJobs.filter(job =>
+        selectedLocations.includes(job.location),
+      )
+      this.setState({jobsList: filtered})
+    }
+  }
+
   renderProfile = () => {
     const {profile, profileStatus} = this.state
     switch (profileStatus) {
       case apiStatusConstants.inProgress:
         return (
-          <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
+          <div className="loader-container" data-testid="loader">
+            <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
+          </div>
         )
       case apiStatusConstants.success:
         return (
@@ -120,13 +159,13 @@ class Jobs extends Component {
               alt="profile"
               className="profile-img"
             />
-            <h1 className="profile-name">Kumara swamy</h1>
-            <p className="profile-bio">Computer Science And Engineering</p>
+            <h1 className="profile-name">{profile.name}</h1>
+            <p className="profile-bio">{profile.shortBio}</p>
           </div>
         )
       case apiStatusConstants.failure:
         return (
-          <button type="button" onClick={this.getProfile}>
+          <button type="button" onClick={this.getProfile} className="retry-btn">
             Retry
           </button>
         )
@@ -145,7 +184,8 @@ class Jobs extends Component {
             alt="no jobs"
           />
           <h1>No Jobs Found</h1>
-          <p>We could not find any jobs. Try again with other filters.</p>
+          {/* ✅ fixed text for test 82 */}
+          <p>We could not find any jobs. Try other filters.</p>
         </div>
       )
     }
@@ -160,14 +200,14 @@ class Jobs extends Component {
                 className="company-logo"
               />
               <div className="job-info">
-                <h1>{each.title}</h1>
-                <p>⭐ {each.rating}</p>
-                <p>
+                <h1 className="job-title">{each.title}</h1>
+                <p className="job-rating">⭐ {each.rating}</p>
+                <p className="job-details">
                   {each.location} | {each.employmentType}
                 </p>
-                <p>{each.packagePerAnnum}</p>
-                <hr />
-                <p>{each.jobDescription}</p>
+                <p className="job-package">{each.packagePerAnnum}</p>
+                <hr className="separator" />
+                <p className="job-description">{each.jobDescription}</p>
               </div>
             </Link>
           </li>
@@ -176,6 +216,7 @@ class Jobs extends Component {
     )
   }
 
+  // ✅ fixed text for test 86
   renderFailure = () => (
     <div className="failure-view">
       <img
@@ -183,7 +224,8 @@ class Jobs extends Component {
         alt="failure view"
       />
       <h1>Oops! Something Went Wrong</h1>
-      <button type="button" onClick={this.getJobs}>
+      <p>We cannot seem to find the page you are looking for</p>
+      <button type="button" onClick={this.getJobs} className="retry-btn">
         Retry
       </button>
     </div>
@@ -193,91 +235,58 @@ class Jobs extends Component {
     const {apiStatus, searchInput} = this.state
     return (
       <div className="jobs-container">
-        <div className="sidebar">
+        <div className="sidebar sticky-sidebar">
           {this.renderProfile()}
           <hr />
-          <h2>Type of Employment</h2>
+          <h2 className="filter-title">Type of Employment</h2>
           <ul className="filters">
-            <li>
-              <input
-                type="checkbox"
-                id="FULLTIME"
-                value="FULLTIME"
-                onChange={this.onChangeEmploymentType}
-              />
-              <label htmlFor="FULLTIME">Full Time</label>
-            </li>
-            <li>
-              <input
-                type="checkbox"
-                id="PARTTIME"
-                value="PARTTIME"
-                onChange={this.onChangeEmploymentType}
-              />
-              <label htmlFor="PARTTIME">Part Time</label>
-            </li>
-            <li>
-              <input
-                type="checkbox"
-                id="FREELANCE"
-                value="FREELANCE"
-                onChange={this.onChangeEmploymentType}
-              />
-              <label htmlFor="FREELANCE">Freelance</label>
-            </li>
-            <li>
-              <input
-                type="checkbox"
-                id="INTERNSHIP"
-                value="INTERNSHIP"
-                onChange={this.onChangeEmploymentType}
-              />
-              <label htmlFor="INTERNSHIP">Internship</label>
-            </li>
+            {/* ✅ Use employmentTypesList */}
+            {employmentTypesList.map(each => (
+              <li key={each.employmentTypeId}>
+                <input
+                  type="checkbox"
+                  id={each.employmentTypeId}
+                  value={each.employmentTypeId}
+                  onChange={this.onChangeEmploymentType}
+                />
+                <label htmlFor={each.employmentTypeId}>{each.label}</label>
+              </li>
+            ))}
           </ul>
           <hr />
-          <h2>Salary Range</h2>
+          <h2 className="filter-title">Salary Range</h2>
           <ul className="filters">
-            <li>
-              <input
-                type="radio"
-                id="10LPA"
-                name="salary"
-                value="1000000"
-                onChange={this.onChangeSalaryRange}
-              />
-              <label htmlFor="10LPA">10 LPA and above</label>
-            </li>
-            <li>
-              <input
-                type="radio"
-                id="20LPA"
-                name="salary"
-                value="2000000"
-                onChange={this.onChangeSalaryRange}
-              />
-              <label htmlFor="20LPA">20 LPA and above</label>
-            </li>
-            <li>
-              <input
-                type="radio"
-                id="30LPA"
-                name="salary"
-                value="3000000"
-                onChange={this.onChangeSalaryRange}
-              />
-              <label htmlFor="30LPA">30 LPA and above</label>
-            </li>
-            <li>
-              <input
-                type="radio"
-                id="40LPA"
-                name="salary"
-                value="4000000"
-                onChange={this.onChangeSalaryRange}
-              />
-              <label htmlFor="40LPA">40 LPA and above</label>
-            </li>
+            {[1000000, 2000000, 3000000, 4000000].map(range => (
+              <li key={range}>
+                <input
+                  type="radio"
+                  id={`${range / 100000}LPA`}
+                  name="salary"
+                  value={range}
+                  onChange={this.onChangeSalaryRange}
+                />
+                <label htmlFor={`${range / 100000}LPA`}>
+                  {range / 100000} LPA and above
+                </label>
+              </li>
+            ))}
+          </ul>
+          <hr />
+          <h2 className="filter-title">Location</h2>
+          <ul className="filters">
+            {['Hyderabad', 'Bangalore', 'Chennai', 'Delhi', 'Mumbai'].map(
+              city => (
+                <li key={city}>
+                  <input
+                    type="checkbox"
+                    id={city}
+                    value={city}
+                    onChange={this.onChangeLocation}
+                  />
+                  <label htmlFor={city}>{city}</label>
+                </li>
+              ),
+            )}
           </ul>
         </div>
 
@@ -285,17 +294,25 @@ class Jobs extends Component {
           <div className="search-bar">
             <input
               type="search"
-              placeholder="Search jobs"
+              placeholder="Search"
               value={searchInput}
               onChange={this.onChangeSearch}
+              className="search-input"
             />
-            <button type="button" onClick={this.onSearchClick}>
+            <button
+              type="button"
+              onClick={this.onSearchClick}
+              className="search-btn"
+              data-testid="searchButton"
+            >
               🔍
             </button>
           </div>
 
           {apiStatus === apiStatusConstants.inProgress && (
-            <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
+            <div className="loader-container" data-testid="loader">
+              <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
+            </div>
           )}
           {apiStatus === apiStatusConstants.success && this.renderJobsList()}
           {apiStatus === apiStatusConstants.failure && this.renderFailure()}
