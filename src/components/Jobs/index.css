@@ -40,28 +40,24 @@
   font-size: 14px;
 }
 
-/* Filters Section */
 .filters h2 {
   margin: 10px 0;
 }
 
-/* List styling for checkboxes and radios */
 .filters li {
   display: flex;
   align-items: center;
-  margin-bottom: 6px; /* less spacing between items */
+  margin-bottom: 6px; 
 }
 
-/* Checkbox & Radio input styles */
 .filters li input[type='checkbox'],
 .filters li input[type='radio'] {
-  width: 14px; /* smaller size */
-  height: 14px; /* smaller size */
-  margin: 0 6px 0 0; /* small space between input and label */
+  width: 14px;
+  height: 14px; 
+  margin: 0 6px 0 0;
   cursor: pointer;
 }
 
-/* Label styles */
 .filters li label {
   font-size: 14px;
   color: #f1f1f1;
@@ -127,9 +123,6 @@
   margin: 10px 0;
 }
 
-/* ---------------- Responsive ---------------- */
-
-/* Small devices (mobile) */
 @media screen and (max-width: 767px) {
   .jobs-container {
     flex-direction: column;
@@ -169,7 +162,6 @@
   }
 }
 
-/* Medium/Large devices */
 @media screen and (min-width: 768px) {
   .sidebar {
     flex: 0 0 30%;
@@ -180,16 +172,14 @@
   }
 }
 
-/* Ensure all job text is white and no underlines */
 .job-item,
 .job-item h1,
 .job-item p,
 .job-item a {
-  color: #ffffff; /* Keep text white */
-  text-decoration: none; /* Remove underlines */
+  color: #ffffff; 
+  text-decoration: none;
 }
 
-/* Optional: maintain consistent spacing for job-item content */
 .job-info h1 {
   font-size: 18px;
   margin-bottom: 5px;
@@ -205,13 +195,12 @@
   margin: 10px 0;
 }
 
-/* Job links specifically (if used) */
 .job-link {
-  text-decoration: none; /* Remove underline */
+  text-decoration: none; 
   color: #ffffff;
 }
 
 .job-link:hover {
-  text-decoration: none; /* Remove underline on hover */
+  text-decoration: none; 
   color: #ffffff;
 }

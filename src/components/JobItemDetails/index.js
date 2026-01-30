@@ -85,65 +85,66 @@ class JobItemDetails extends Component {
     const {jobDetails, skills, lifeAtCompany, similarJobs} = this.state
     return (
       <div className="job-details-container">
-        <div className="job-header">
-          <img
-            src={jobDetails.companyLogoUrl}
-            alt="job details company logo"
-            className="company-logo-details"
-          />
-          <h1 className="job-title">{jobDetails.title}</h1>
-          <p className="rating">⭐ {jobDetails.rating}</p>
-        </div>
-
-        <div className="job-meta">
-          <p>{jobDetails.location}</p>
-          <p>{jobDetails.employmentType}</p>
-          <p>{jobDetails.packagePerAnnum}</p>
-        </div>
-
-        <hr className="separator" />
-
-        <div className="job-description-section">
-          <h1>Description</h1>
-          <p className="job-description">{jobDetails.jobDescription}</p>
-          <a
-            href={jobDetails.companyWebsiteUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="visit-link"
-          >
-            Visit
-          </a>
-        </div>
-
-        <div className="skills-section">
-          <h1>Skills</h1>
-          <ul className="skills-list">
-            {skills.map(each => (
-              <li key={each.name} className="skill-item">
-                <img
-                  src={each.imageUrl}
-                  alt={each.name}
-                  className="skill-icon"
-                />
-                <p>{each.name}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="life-at-company">
-          <h1>Life at Company</h1>
-          <div className="life-content">
-            <p>{lifeAtCompany.description}</p>
+        <div className="jobs">
+          <div className="job-header">
             <img
-              src={lifeAtCompany.imageUrl}
-              alt="life at company"
-              className="life-img"
+              src={jobDetails.companyLogoUrl}
+              alt="job details company logo"
+              className="company-logo-details"
             />
+            <h1 className="job-title">{jobDetails.title}</h1>
+            <p className="rating">⭐ {jobDetails.rating}</p>
+          </div>
+
+          <div className="job-meta">
+            <p>{jobDetails.location}</p>
+            <p>{jobDetails.employmentType}</p>
+            <p>{jobDetails.packagePerAnnum}</p>
+          </div>
+
+          <hr className="separator" />
+
+          <div className="job-description-section">
+            <h1>Description</h1>
+            <p className="job-description">{jobDetails.jobDescription}</p>
+            <a
+              href={jobDetails.companyWebsiteUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="visit-link"
+            >
+              Visit
+            </a>
+          </div>
+
+          <div className="skills-section">
+            <h1>Skills</h1>
+            <ul className="skills-list">
+              {skills.map(each => (
+                <li key={each.name} className="skill-item">
+                  <img
+                    src={each.imageUrl}
+                    alt={each.name}
+                    className="skill-icon"
+                  />
+                  <p>{each.name}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="life-at-company">
+            <h1>Life at Company</h1>
+            <div className="life-content">
+              <p>{lifeAtCompany.description}</p>
+              <img
+                src={lifeAtCompany.imageUrl}
+                alt="life at company"
+                className="life-img"
+              />
+            </div>
           </div>
         </div>
-
         <h1>Similar Jobs</h1>
         <ul className="similar-jobs-list">
           {similarJobs.map(job => (
