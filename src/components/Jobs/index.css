@@ -47,13 +47,13 @@
 .filters li {
   display: flex;
   align-items: center;
-  margin-bottom: 6px; 
+  margin-bottom: 6px;
 }
 
 .filters li input[type='checkbox'],
 .filters li input[type='radio'] {
   width: 14px;
-  height: 14px; 
+  height: 14px;
   margin: 0 6px 0 0;
   cursor: pointer;
 }
@@ -176,7 +176,7 @@
 .job-item h1,
 .job-item p,
 .job-item a {
-  color: #ffffff; 
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -196,11 +196,11 @@
 }
 
 .job-link {
-  text-decoration: none; 
+  text-decoration: none;
   color: #ffffff;
 }
 
 .job-link:hover {
-  text-decoration: none; 
+  text-decoration: none;
   color: #ffffff;
 }
